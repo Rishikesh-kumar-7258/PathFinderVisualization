@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Path Finding Visualization</title>
+
+  <!-- TAILWIND CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FONT AWESOME -->
+  <script src="https://kit.fontawesome.com/d59016f14e.js" crossorigin="anonymous"></script>
+
+  <!-- CUSTOM CSS -->
+  <link rel="stylesheet" href="src/style.css">
+</head>
+
+<body>
+  <div class="container mx-auto">
+
+
+
+    <!-- MAIN BOX  -->
+    <div class="relative">
+
+      <!-- SIDEBAR  -->
+      <div>
+        <p class="text-2xl absolute top-1.5 left-1.5 hover:cursor-pointer transition duration-700 z-10"
+          id="settings-icon"><i class="fa-solid fa-gear"></i></p>
+
+
+        <div class="absolute top-1 left-1 h-screen w-screen max-w-96 hidden border-2 bg-blue-100 p-2 space-y-4"
+          id="settings-box">
+
+          <p class="text-2xl font-bold text-center">Options</p>
+
+
+          <!-- SPEED  -->
+          <div class="flex justify-between">
+            <p>Speed</p>
+            <input type="range" min="1" max="100" value="50" class="slider" id="speed">
+          </div>
+
+          <!-- ALGORITHM  -->
+          <div class="flex justify-between">
+            <p>Algorithm</p>
+            <select name="algorithm" id="algorithm-select">
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAZE BOX -->
+      <div class="h-screen w-screen bg-green-100"></div>
+    </div>
+  </div>
+
+
+
+  <!-- CUSTOM JS -->
+  <script src="src/script.js"></script>
+</body>
+
+</html>
