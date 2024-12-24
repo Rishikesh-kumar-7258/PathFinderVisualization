@@ -22,7 +22,15 @@
 
 
     <!-- MAIN BOX  -->
-    <div class="relative">
+    <div class="relative" id="main-box">
+
+      <!-- NO PATH FOUND TEXT  -->
+      <div class="hidden absolute top-0 right-0 z-50" id="no-path-box">
+        <div class="bg-red-500 text-white p-2 rounded shadow-md border p-3 flex items-center justify-center space-x-2">
+          <p class="text-2xl font-bold">No Path Found</p>
+          <i class="fa-solid fa-xmark text-xl hover:cursor-pointer" id="no-path-cross"></i>
+        </div>
+      </div>
 
       <!-- SIDEBAR  -->
       <div>
@@ -66,8 +74,10 @@
 
           <!-- RANDOM AND CUSTOM BUTTON  -->
           <div class="flex justify-between">
-            <button class="bg-blue-500 px-4 py-2 text-white rounded shadow-md" id="random-btn">Random
-              <button class="bg-blue-500 px-4 py-2 text-white rounded shadow-md" id="custom-btn">Custom
+            <button class="bg-blue-500 px-4 py-2 text-white rounded shadow-md" id="random-btn">Random</button>
+            <button class="bg-blue-500 px-4 py-2 text-white rounded shadow-md" id="clear-btn">Clear</button>
+            <button class="bg-blue-500 px-4 py-2 text-white rounded shadow-md" id="custom-btn">Custom</button>
+
           </div>
 
 
