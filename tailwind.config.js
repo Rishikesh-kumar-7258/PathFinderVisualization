@@ -1,3 +1,5 @@
 module.exports = {
-	theme: {},
+	theme: {
+		extends: {},
+	},
 };
