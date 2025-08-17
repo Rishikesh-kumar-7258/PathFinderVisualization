@@ -135,6 +135,161 @@ class DFS extends SearchTemplate {
 	}
 }
 
+class AStar extends SearchTemplate {
+	constructor(maze, start, end) {
+		super(maze, start, end);
+	}
+
+	heuristic(a, b) {
+		// Manhattan distance
+		return Math.abs(a.i - b[0]) + Math.abs(a.j - b[1]);
+	}
+
+	searchPath() {
+		const visited = Array.from({ length: this.rows }, () =>
+			Array(this.columns).fill(false)
+		);
+
+		const openSet = [new Node(this.start[0], this.start[1])];
+		const gScore = Array.from({ length: this.rows }, () =>
+			Array(this.columns).fill(Infinity)
+		);
+		gScore[this.start[0]][this.start[1]] = 0;
+
+		const fScore = Array.from({ length: this.rows }, () =>
+			Array(this.columns).fill(Infinity)
+		);
+		fScore[this.start[0]][this.start[1]] = this.heuristic(
+			new Node(this.start[0], this.start[1]),
+			this.end
+		);
+
+		while (openSet.length > 0) {
+			// Get node with lowest fScore
+			openSet.sort(
+				(a, b) =>
+					fScore[a.i][a.j] - fScore[b.i][b.j]
+			);
+			const current = openSet.shift();
+			const { i, j } = current;
+
+			if (i === this.end[0] && j === this.end[1]) {
+				// Reached the end
+				const path = [];
+				let node = current;
+				while (node) {
+					path.unshift(node);
+					node = node.parent;
+				}
+				return path;
+			}
+
+			visited[i][j] = true;
+
+			const neighbors = [
+				[i - 1, j],
+				[i + 1, j],
+				[i, j - 1],
+				[i, j + 1],
+			];
+
+			for (const [ni, nj] of neighbors) {
+				if (
+					ni < 0 ||
+					ni >= this.rows ||
+					nj < 0 ||
+					nj >= this.columns ||
+					visited[ni][nj] ||
+					this.maze[ni][nj] === 1
+				) {
+					continue;
+				}
+
+				const tentativeG = gScore[i][j] + 1;
+
+				if (tentativeG < gScore[ni][nj]) {
+					gScore[ni][nj] = tentativeG;
+					fScore[ni][nj] =
+						tentativeG +
+						this.heuristic(new Node(ni, nj), this.end);
+					openSet.push(new Node(ni, nj, current));
+				}
+			}
+		}
+
+		return [];
+	}
+}
+
+class Dijkstra extends SearchTemplate {
+	constructor(maze, start, end) {
+		super(maze, start, end);
+	}
+
+	searchPath() {
+		const visited = Array.from({ length: this.rows }, () =>
+			Array(this.columns).fill(false)
+		);
+		const distance = Array.from({ length: this.rows }, () =>
+			Array(this.columns).fill(Infinity)
+		);
+
+		distance[this.start[0]][this.start[1]] = 0;
+		const queue = [new Node(this.start[0], this.start[1])];
+
+		while (queue.length) {
+			queue.sort(
+				(a, b) =>
+					distance[a.i][a.j] - distance[b.i][b.j]
+			);
+			const current = queue.shift();
+			const { i, j } = current;
+
+			if (i === this.end[0] && j === this.end[1]) {
+				const path = [];
+				let node = current;
+				while (node) {
+					path.unshift(node);
+					node = node.parent;
+				}
+				return path;
+			}
+
+			if (visited[i][j]) continue;
+			visited[i][j] = true;
+
+			const neighbors = [
+				[i - 1, j],
+				[i + 1, j],
+				[i, j - 1],
+				[i, j + 1],
+			];
+
+			for (const [ni, nj] of neighbors) {
+				if (
+					ni < 0 ||
+					ni >= this.rows ||
+					nj < 0 ||
+					nj >= this.columns ||
+					visited[ni][nj] ||
+					this.maze[ni][nj] === 1
+				) {
+					continue;
+				}
+
+				const alt = distance[i][j] + 1;
+				if (alt < distance[ni][nj]) {
+					distance[ni][nj] = alt;
+					queue.push(new Node(ni, nj, current));
+				}
+			}
+		}
+
+		return [];
+	}
+}
+
+
 // ############ VARIABLES ############
 
 var MAZE = [];
@@ -151,7 +306,10 @@ var foundPath = false;
 const ALGORITHMS = {
 	BFS: BFS,
 	DFS: DFS,
+	AStar: AStar,
+	Dijkstra: Dijkstra,
 };
+
 const PATH_COLOR = "bg-blue-500";
 const WALL_COLOR = "bg-gray-500";
 const START_COLOR = "bg-green-500";
